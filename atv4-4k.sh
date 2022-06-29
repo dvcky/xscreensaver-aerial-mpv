@@ -3,8 +3,8 @@
 [[ -z "$XDG_CONFIG_HOME" ]] &&
   XDG_CONFIG_HOME="$HOME/.config"
 
-command -v mplayer >/dev/null 2>&1 || {
-  echo "I require mplayer but it's not installed. Aborting." >&2
+command -v mpv >/dev/null 2>&1 || {
+  echo "I require mpv but it's not installed. Aborting." >&2
   exit 1; }
 
 # path of movies
@@ -166,11 +166,11 @@ do
   runit
   if [[ -f "$movies/$useit" ]]; then
     # file is on filesystem so just play it
-    mplayer -nosound -really-quiet -nolirc -nostop-xscreensaver -wid "$XSCREENSAVER_WINDOW" -fs "$movies/$useit" &
+    mpv --loop-file=inf --no-audio --no-osc --really-quiet --stop-screensaver=no --wid=$XSCREENSAVER_WINDOW "$movies/$useit" &
   else
     # no file on filesystem so try to stream it
     APPLEURL="https://sylvan.apple.com/Aerials/2x/Videos"
-    mplayer -nosound -really-quiet -nolirc -nostop-xscreensaver -wid "$XSCREENSAVER_WINDOW" -fs "$APPLEURL/$useit" &
+    mpv --loop-file=inf --no-audio --no-osc --really-quiet --stop-screensaver=no --wid=$XSCREENSAVER_WINDOW "$APPLEURL/$useit" &
   fi
   pid=$!
   wait $pid
